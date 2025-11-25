@@ -1,0 +1,111 @@
+name: C++ Build and Test
+
+on:
+  push:
+    branches: [ main, copilot/** ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-ubuntu:
+    runs-on: ubuntu-22.04
+    
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+    
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          build-essential \
+          cmake \
+          pkg-config \
+          libopencv-dev \
+          libeigen3-dev
+    
+    - name: Check versions
+      run: |
+        cmake --version
+        g++ --version
+        pkg-config --modversion opencv4 || pkg-config --modversion opencv
+        ls /usr/include/eigen3
+    
+    - name: Create build directory
+      run: mkdir -p build
+    
+    - name: CMake configure
+      run: |
+        cd build
+        cmake .. -DCMAKE_BUILD_TYPE=Release
+    
+    - name: Build
+      run: |
+        cd build
+        make -j$(nproc)
+    
+    - name: Test executable
+      run: |
+        ./build/classy_sort --help
+        
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: classy-sort-ubuntu
+        path: build/classy_sort
+
+  build-macos:
+    runs-on: macos-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+    
+    - name: Install dependencies
+      run: |
+        brew install cmake opencv eigen
+    
+    - name: Check versions
+      run: |
+        cmake --version
+        clang++ --version
+        pkg-config --modversion opencv4 || pkg-config --modversion opencv
+    
+    - name: Create build directory
+      run: mkdir -p build
+    
+    - name: CMake configure
+      run: |
+        cd build
+        cmake .. -DCMAKE_BUILD_TYPE=Release
+    
+    - name: Build
+      run: |
+        cd build
+        make -j$(sysctl -n hw.ncpu)
+    
+    - name: Test executable
+      run: |
+        ./build/classy_sort --help
+        
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: classy-sort-macos
+        path: build/classy_sort
+
+  docker-build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+    
+    - name: Build Docker image
+      run: docker build -t classy-sort-cpp .
+    
+    - name: Test Docker image
+      run: docker run --rm classy-sort-cpp --help
