@@ -6,9 +6,20 @@ __pycache__/
 # C extensions
 *.so
 
+# C++ build artifacts
+build/
+*.o
+*.a
+*.out
+*.exe
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.onnx
+
 # Distribution / packaging
 .Python
-build/
 develop-eggs/
 dist/
 downloads/
@@ -106,6 +117,7 @@ celerybeat.pid
 .venv
 env/
 venv/
+venv_onnx/
 ENV/
 env.bak/
 venv.bak/
@@ -137,3 +149,4 @@ dmypy.json
 
 #output folder
 inference/output/
+output/

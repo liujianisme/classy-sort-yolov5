@@ -6,6 +6,18 @@ ClassySORT is a simple real-time multi-object tracker (MOT) that works for any k
 
 ![demo-footage](assets/velon-2019-creds.gif)
 
+## 🚀 NEW: C++ Implementation Available!
+
+ClassySORT is now available in **C++ with OpenCV**, offering **2-3x faster performance** than the Python version!
+
+**Choose your version:**
+- **Python Version** (below): Easy to use, PyTorch-based, perfect for prototyping
+- **[C++ Version](README_CPP.md)**: High performance, OpenCV DNN, production-ready
+
+See [README_CPP.md](README_CPP.md) for C++ documentation and [BUILD_TEST_GUIDE.md](BUILD_TEST_GUIDE.md) for build instructions.
+
+---
+
 ## Introduction
 
 ClassySORT is designed to be a state-of-the-art (SOTA) multi-object tracker (MOT) for use on your own projects. And bcause the You-only-look-once algorithm (YOLO) detector is pretrained on COCO dataset, ClassySORT can detect and count and track 80 different kinds of common objects 'out of the box'.
@@ -22,7 +34,7 @@ This repository uses a fixed version of YOLOv5 to ensure compatbility. Replacing
 
 If you only need to track people, or have the resources to train a model from scratch with your own dataset, see 'More Complex MOTs' section below.
 
-## Using ClassySORT
+## Using ClassySORT (Python Version)
 
 Clone this repository
 
