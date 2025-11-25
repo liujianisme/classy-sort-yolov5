@@ -139,7 +139,13 @@ int main(int argc, char** argv) {
     bool is_webcam = (source == "0" || source.find("rtsp") == 0 || source.find("http") == 0);
     
     if (is_webcam) {
-        cap.open(std::stoi(source));
+        try {
+            int cam_index = std::stoi(source);
+            cap.open(cam_index);
+        } catch (const std::invalid_argument&) {
+            // If source is not a number, try opening as stream URL
+            cap.open(source);
+        }
     } else {
         cap.open(source);
     }

@@ -14,10 +14,16 @@ YoloDetector::YoloDetector(const std::string& model_path,
     // Set backend and target
     net.setPreferableBackend(cv::dnn::DNN_BACKEND_OPENCV);
     
-    // Use CUDA if available
-    if (cv::cuda::getCudaEnabledDeviceCount() > 0) {
-        net.setPreferableTarget(cv::dnn::DNN_TARGET_CUDA);
-    } else {
+    // Use CUDA if available (with error handling)
+    try {
+        if (cv::cuda::getCudaEnabledDeviceCount() > 0) {
+            net.setPreferableTarget(cv::dnn::DNN_TARGET_CUDA);
+            std::cout << "Using CUDA acceleration" << std::endl;
+        } else {
+            net.setPreferableTarget(cv::dnn::DNN_TARGET_CPU);
+        }
+    } catch (const cv::Exception&) {
+        // OpenCV not built with CUDA support, fall back to CPU
         net.setPreferableTarget(cv::dnn::DNN_TARGET_CPU);
     }
     

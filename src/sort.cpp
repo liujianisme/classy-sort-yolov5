@@ -39,7 +39,10 @@ std::vector<std::vector<float>> Sort::update(const std::vector<std::vector<float
     }
     
     // Associate detections to trackers
-    auto [matches, unmatched_dets, unmatched_trks] = 
+    std::vector<std::pair<int, int>> matches;
+    std::vector<int> unmatched_dets;
+    std::vector<int> unmatched_trks;
+    std::tie(matches, unmatched_dets, unmatched_trks) = 
         associateDetectionsToTrackers(detections, predicted_boxes);
     
     // Update matched trackers with assigned detections
@@ -116,7 +119,7 @@ Sort::associateDetectionsToTrackers(const std::vector<std::vector<float>>& detec
     
     // Solve assignment problem
     std::vector<int> assignment;
-    HungarianAlgorithm::solve(cost_matrix, assignment);
+    LinearAssignment::solve(cost_matrix, assignment);
     
     // Process assignments
     std::vector<bool> det_matched(detections.size(), false);

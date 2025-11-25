@@ -58,7 +58,8 @@ void KalmanBoxTracker::update(const std::vector<float>& bbox) {
 }
 
 std::vector<float> KalmanBoxTracker::predict() {
-    // Check for invalid scale
+    // Prevent negative scale: if (scale_velocity + current_scale) <= 0, reset velocity
+    // This ensures the scale (area) remains positive which is physically meaningful
     if ((state(6) + state(2)) <= 0) {
         state(6) = 0;
     }

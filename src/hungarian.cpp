@@ -38,8 +38,10 @@ std::vector<std::vector<double>> iouBatch(const std::vector<std::vector<float>>&
     return iou_matrix;
 }
 
-// Simplified Hungarian algorithm implementation
-double HungarianAlgorithm::solve(const std::vector<std::vector<double>>& costMatrix,
+// Simplified linear assignment implementation using greedy algorithm
+// This is suitable for real-time tracking where speed is critical
+// For optimal assignment, a full Hungarian algorithm implementation would be needed
+double LinearAssignment::solve(const std::vector<std::vector<double>>& costMatrix,
                                  std::vector<int>& assignment) {
     if (costMatrix.empty()) {
         return 0.0;

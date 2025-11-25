@@ -5,24 +5,20 @@
 #include <limits>
 
 /**
- * Hungarian algorithm for linear assignment problem
- * Used to match detections to tracked objects
+ * Linear Assignment solver using greedy algorithm
+ * Note: This is a simplified greedy approach suitable for real-time tracking
+ * For optimal assignment, consider implementing the full Hungarian algorithm
  */
-class HungarianAlgorithm {
+class LinearAssignment {
 public:
     /**
-     * Solve the assignment problem
-     * @param costMatrix: NxM cost matrix
+     * Solve the assignment problem using greedy algorithm
+     * @param costMatrix: NxM cost matrix (higher values = better matches for IoU)
      * @param assignment: output vector of assignments (size N)
      * @return total cost
      */
     static double solve(const std::vector<std::vector<double>>& costMatrix, 
                        std::vector<int>& assignment);
-
-private:
-    static void augment(std::vector<std::vector<double>>& costMatrix,
-                       std::vector<int>& assignment,
-                       int rows, int cols);
 };
 
 /**
